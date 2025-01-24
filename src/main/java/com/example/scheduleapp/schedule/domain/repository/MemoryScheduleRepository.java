@@ -3,6 +3,7 @@ package com.example.scheduleapp.schedule.domain.repository;
 import com.example.scheduleapp.schedule.domain.model.Schedule;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class MemoryScheduleRepository implements ScheduleRepository{
     @Override
     public List<Schedule> findAllWithOptionalConditions(String creatorName, LocalDate lastModifiedDate) {
         Stream<Schedule> stream = store.values().stream();
-        if (creatorName != null) {
+        if (StringUtils.hasText(creatorName)) {
             stream = stream.filter(schedule -> Objects.equals(creatorName, schedule.getCreatorName()));
         }
         if (lastModifiedDate != null) {
